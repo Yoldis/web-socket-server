@@ -12,9 +12,14 @@ class Server {
         this.server = require('http').createServer(this.app);
         this.io = require('socket.io')(this.server);
 
+        this.path = {
+            auth:'/api/auth/'
+        };
+
         // this.listen();
         this.middleware();
 
+        this.routes();
         // Socket
         this.socket();
     }
@@ -23,6 +28,10 @@ class Server {
     middleware(){
         this.app.use(cors());
         this.app.use(express.static('public'));
+    }
+
+    routes(){
+        this.app.use(this.path.auth,  require('../routes/authRoutes'));
     }
 
     socket(){
